@@ -15,13 +15,10 @@ import java.util.List;
 
 public class Pessoa {
 
-    // atributos
     private LocalDate dataNascimento;
     private String nome;
     private String CPF;
     
-
-    //construtores
     Pessoa(String n) {
         nome = n;
     }
@@ -35,7 +32,6 @@ public class Pessoa {
         setCpf(CPF);
     }
 
-    // métodos
     public String exibirDados() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
