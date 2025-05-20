@@ -14,7 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import modelo.Aluno;
+import modelo.AlunoConvenio;
 import modelo.AvaliacaoFisica;
+import modelo.Convenio;
 import modelo.Professor;
 import modelo.Plano;
 
@@ -34,14 +36,16 @@ public class TesteHeranca {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         Aluno a1 = new Aluno();
-        a1.setNome("João (com desconto)");
+        a1.setNome("João");
         a1.setMatricula("10035");
         a1.setDataMatricula(LocalDate.parse("01/01/2025", formato));
         a1.setPlano(p1);
         a1.verificaDesconto();
-
-        Aluno a2 = new Aluno();
-        a2.setNome("Maria (sem desconto)");
+      
+        Convenio convenioIfsul = new Convenio("IFSUL", 5.0);
+        
+        Aluno a2 = new AlunoConvenio(convenioIfsul);
+        a2.setNome("Maria");
         a2.setMatricula("10040");
         a2.setDataMatricula(LocalDate.parse("12/05/2025", formato));
         a2.setPlano(p1);

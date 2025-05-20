@@ -4,30 +4,21 @@
  */
 package modelo;
 
-import java.time.LocalDate;
-
 /**
  *
  * @author 20182PF.CC0076
  */
-  public class Plano {
-
-    private String nome;
+public class Convenio {
+    
+     private String nome;
     private String descricao;
-    private double valor;
-
-    // Construtor com parâmetros
-    public Plano(String nome, String descricao, double valor) {
+    private double desconto;
+    
+    public Convenio(String nome, double desconto) {
         this.nome = nome;
-        this.descricao = descricao;
-        this.valor = valor;
+        this.desconto = desconto;
     }
 
-    // Construtor padrão (opcional, mas útil)
-    public Plano() {
-    }
-
-    // Getters e Setters
     public String getNome() {
         return nome;
     }
@@ -44,18 +35,12 @@ import java.time.LocalDate;
         this.descricao = descricao;
     }
 
-    public double getValor() {
-        return valor;
+    public double getDesconto() {
+        return desconto;
     }
 
-    public void setValor(double valor) {
-        this.valor = valor;
+    public void setDesconto(double desconto) {
+        this.desconto = desconto;
     }
-
-    @Override
-    public String toString() {
-        return nome + " - " + descricao + " - R$ " + valor;
-    }
+    
 }
-
-

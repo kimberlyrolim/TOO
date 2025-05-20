@@ -9,27 +9,22 @@ package modelo;
  * @author 20182PF.CC0076
  */
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Aluno extends Pessoa{
-    private String matricula;
-    private LocalDate dataMatricula;
-    private double valorMensalidade;
-    Plano plano;
-    private List<AvaliacaoFisica> avaliacoes = new ArrayList<>();
-    
+    protected String matricula;
+    protected List<AvaliacaoFisica> avaliacoes = new ArrayList<>();
+    protected Plano plano;
+    protected double valorMensalidade;
+    protected LocalDate dataMatricula;
+
     public void adicionarAvaliacao(AvaliacaoFisica avaliacao) {
         avaliacoes.add(avaliacao);
     }
-    
-    public String mostrarAvaliacoes(){
-        String aux = "Histórico de Avaliações: \n";
-        for(AvaliacaoFisica cadaAvaliacao: avaliacoes){
-            aux += "->> "+ cadaAvaliacao+"\n";
-        }
-        return aux;
-    }
+
 
     public String getMatricula() {
         return matricula;
@@ -39,43 +34,81 @@ public class Aluno extends Pessoa{
         this.matricula = matricula;
     }
 
-    public double verificaDesconto() {
-    double valorBase = plano.getValor();
-   
-    int anos = LocalDate.now().getYear() - dataMatricula.getYear();
-    int meses = LocalDate.now().getMonthValue() - dataMatricula.getMonthValue();
-    int totalMeses = anos * 12 + meses;
-    
-    if (totalMeses >= 3) {
-        return valorBase * 0.9; 
-    } else {
-        return valorBase;
+   @Override
+public String exibirDados() {
+    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    String aux = "....... Dados do Aluno(a) .......\n";
+    aux += "Nome: " + getNome() + "\n";
+    aux += "\nMatrícula: " + getMatricula();
+
+    if (dataMatricula != null) {
+        aux += "\nData de Matrícula: " + formato.format(dataMatricula);
+    }
+
+    if (plano != null) {
+        aux += "\nPlano: " + plano.getNome() + " - R$ " + String.format("%.2f", plano.getValor());
+    }
+   if (!(this instanceof AlunoConvenio)) {
+        aux += "\nValor total a ser pago: R$ " + String.format("%.2f", valorMensalidade);
+    }
+    aux += "\n..................................\n";
+
+    return aux;
+}
+
+    public List<AvaliacaoFisica> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<AvaliacaoFisica> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+    }
+
+    public double getValorMensalidade() {
+        return valorMensalidade;
+    }
+
+    public void setValorMensalidade(double valorMensalidade) {
+        this.valorMensalidade = valorMensalidade;
+    }
+
+    public LocalDate getDataMatricula() {
+        return dataMatricula;
+    }
+
+    public void setDataMatricula(LocalDate dataMatricula) {
+        this.dataMatricula = dataMatricula;
+    }
+
+    public Plano getPlano() {
+        return plano;
+    }
+
+    public void setPlano(Plano plano) {
+        this.plano = plano;
+        verificaDesconto();
+
+    }
+
+   public void verificaDesconto() {
+    if (dataMatricula == null) {
+        System.out.println("Data de matrícula não informada.");
+        return;
+    }
+
+    if (plano.getValor() == 0.0) {
+        System.out.println("Plano com valor zerado!");
+        return;
+    }
+
+    Period periodo = Period.between(dataMatricula, LocalDate.now());
+    int meses = periodo.getYears() * 12 + periodo.getMonths();
+
+    valorMensalidade = plano.getValor();
+
+    if (meses >= 3) {
+        valorMensalidade -= (valorMensalidade * 0.1);
     }
 }
-    @Override
-    public String exibirDados() {
-    String aux = "------ Dados do Aluno ------\n";
-    aux += "Nome: " + getNome() + "\n";
-
-    aux += "Matricula: " + matricula + "\n";
-    
-    if (plano != null) {
-        aux += "Plano: " + plano.getNomePlano() + "\n";
-        aux += "Descrição do Plano: " + plano.getDescricao() + "\n";
-        aux += "Valor do Plano: " + plano.getValor() + "\n";
-        aux += "Valor com Desconto: " + verificaDesconto() + "\n";
-    } else {
-        aux += "Plano: Não associado\n";
-    } 
-        return aux;
-    }
-    
-    public void setDataMatricula(LocalDate dataMatricula) {
-    this.dataMatricula = dataMatricula;
-    }
-    
-    public void setPlano(Plano plano) {
-    this.plano = plano;
-    }
-  
 }
